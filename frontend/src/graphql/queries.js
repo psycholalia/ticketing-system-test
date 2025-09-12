@@ -1,0 +1,111 @@
+import { gql } from '@apollo/client';
+
+export const GET_BOARD_DATA = gql`
+  query GetBoardData($boardId: String!) {
+    board(id: $boardId) {
+      id
+      name
+      createdAt
+    }
+    columns(boardId: $boardId) {
+      id
+      boardId
+      name
+      position
+      createdAt
+    }
+    tickets: allTickets {
+      id
+      columnId
+      title
+      description
+      position
+      createdAt
+    }
+  }
+`;
+
+// Add a custom resolver for all tickets
+export const GET_ALL_TICKETS = gql`
+  query GetAllTickets($boardId: String!) {
+    columns(boardId: $boardId) {
+      id
+      boardId
+      name
+      position
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_BOARD_MUTATION = gql`
+  mutation UpdateBoard($id: String!, $name: String!) {
+    updateBoard(id: $id, name: $name) {
+      id
+      name
+      createdAt
+    }
+  }
+`;
+
+export const CREATE_COLUMN_MUTATION = gql`
+  mutation CreateColumn($input: CreateColumnInput!) {
+    createColumn(input: $input) {
+      id
+      boardId
+      name
+      position
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_COLUMN_MUTATION = gql`
+  mutation UpdateColumn($input: UpdateColumnInput!) {
+    updateColumn(input: $input) {
+      id
+      boardId
+      name
+      position
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_COLUMN_MUTATION = gql`
+  mutation DeleteColumn($id: String!) {
+    deleteColumn(id: $id)
+  }
+`;
+
+export const CREATE_TICKET_MUTATION = gql`
+  mutation CreateTicket($input: CreateTicketInput!) {
+    createTicket(input: $input) {
+      id
+      columnId
+      title
+      description
+      position
+      createdAt
+    }
+  }
+`;
+
+export const UPDATE_TICKET_MUTATION = gql`
+  mutation UpdateTicket($input: UpdateTicketInput!) {
+    updateTicket(input: $input) {
+      id
+      columnId
+      title
+      description
+      position
+      createdAt
+    }
+  }
+`;
+
+export const DELETE_TICKET_MUTATION = gql`
+  mutation DeleteTicket($id: String!) {
+    deleteTicket(id: $id)
+  }
+`;
