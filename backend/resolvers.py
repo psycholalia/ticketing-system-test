@@ -26,6 +26,11 @@ class Query:
     def tickets(self, column_id: str) -> List[Ticket]:
         tickets_data = db.get_tickets_by_column(column_id)
         return [Ticket(**ticket) for ticket in tickets_data]
+    
+    @strawberry.field
+    def all_tickets(self, board_id: str) -> List[Ticket]:
+        tickets_data = db.get_all_tickets_by_board(board_id)
+        return [Ticket(**ticket) for ticket in tickets_data]
 
 @strawberry.type
 class Mutation:

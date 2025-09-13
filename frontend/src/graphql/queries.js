@@ -14,7 +14,7 @@ export const GET_BOARD_DATA = gql`
       position
       createdAt
     }
-    tickets: allTickets {
+    allTickets(boardId: $boardId) {
       id
       columnId
       title
@@ -25,18 +25,6 @@ export const GET_BOARD_DATA = gql`
   }
 `;
 
-// Add a custom resolver for all tickets
-export const GET_ALL_TICKETS = gql`
-  query GetAllTickets($boardId: String!) {
-    columns(boardId: $boardId) {
-      id
-      boardId
-      name
-      position
-      createdAt
-    }
-  }
-`;
 
 export const UPDATE_BOARD_MUTATION = gql`
   mutation UpdateBoard($id: String!, $name: String!) {

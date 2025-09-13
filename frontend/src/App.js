@@ -51,13 +51,12 @@ function App() {
       }
     } else {
       // Handle ticket reordering
-      const sourceColumn = data.columns.find(col => col.id === source.droppableId);
-      const destColumn = data.columns.find(col => col.id === destination.droppableId);
+      const sourceTickets = data.allTickets.filter(ticket => ticket.columnId === source.droppableId);
+      const destTickets = data.allTickets.filter(ticket => ticket.columnId === destination.droppableId);
       
-      if (sourceColumn.id === destColumn.id) {
+      if (source.droppableId === destination.droppableId) {
         // Same column reordering
-        const tickets = data.tickets.filter(ticket => ticket.column_id === sourceColumn.id);
-        const sortedTickets = tickets.sort((a, b) => a.position - b.position);
+        const sortedTickets = sourceTickets.sort((a, b) => a.position - b.position);
         const [reorderedTicket] = sortedTickets.splice(source.index, 1);
         sortedTickets.splice(destination.index, 0, reorderedTicket);
 
@@ -76,7 +75,6 @@ function App() {
         }
       } else {
         // Moving between columns
-        const destTickets = data.tickets.filter(ticket => ticket.column_id === destColumn.id);
         const newPosition = destination.index;
 
         await updateTicket({
@@ -116,7 +114,7 @@ function App() {
         <Board 
           board={data.board}
           columns={data.columns}
-          tickets={data.tickets}
+          tickets={data.allTickets}
           refetch={refetch}
         />
       </div>

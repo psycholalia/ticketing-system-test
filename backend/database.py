@@ -269,3 +269,14 @@ def delete_ticket(ticket_id):
     table = dynamodb.Table('tickets')
     table.delete_item(Key={'id': ticket_id})
     return True
+
+def get_all_tickets_by_board(board_id):
+    """Get all tickets for a board by first getting all columns, then all tickets"""
+    columns = get_columns_by_board(board_id)
+    all_tickets = []
+    
+    for column in columns:
+        tickets = get_tickets_by_column(column['id'])
+        all_tickets.extend(tickets)
+    
+    return all_tickets
