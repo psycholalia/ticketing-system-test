@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { UPDATE_TICKET_MUTATION, DELETE_TICKET_MUTATION } from '../graphql/queries';
-import { X, Trash2, Edit } from 'lucide-react';
+import { X, Trash2, Edit3, Save, Calendar, User, Tag } from 'lucide-react';
 
 const TicketModal = ({ ticket, onClose, refetch }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -68,28 +68,27 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
           <h2 className="modal-title">
             {isEditing ? 'Edit Card' : 'Card Details'}
           </h2>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="modal-actions">
             {!isEditing && (
               <>
                 <button
-                  className="close-btn"
+                  className="icon-btn"
                   onClick={handleEdit}
                   title="Edit card"
                 >
-                  <Edit size={20} />
+                  <Edit3 size={18} />
                 </button>
                 <button
-                  className="close-btn"
+                  className="icon-btn danger"
                   onClick={handleDelete}
                   title="Delete card"
-                  style={{ color: '#de350b' }}
                 >
-                  <Trash2 size={20} />
+                  <Trash2 size={18} />
                 </button>
               </>
             )}
-            <button className="close-btn" onClick={onClose} title="Close">
-              <X size={20} />
+            <button className="icon-btn" onClick={onClose} title="Close">
+              <X size={18} />
             </button>
           </div>
         </div>
@@ -97,7 +96,7 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
         {isEditing ? (
           <form onSubmit={handleSave}>
             <div style={{ marginBottom: '16px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#2d3748' }}>
                 Title
               </label>
               <input
@@ -110,7 +109,7 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
             </div>
 
             <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#2d3748' }}>
                 Description
               </label>
               <textarea
@@ -121,13 +120,14 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
             </div>
 
             <div className="form-buttons">
-              <button type="submit" className="btn-primary">
+              <button type="submit" className="btn btn-primary">
+                <Save size={16} />
                 Save Changes
               </button>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="btn-secondary"
+                className="btn btn-secondary"
               >
                 Cancel
               </button>
@@ -143,7 +143,8 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
 
             {ticket.description && (
               <div style={{ marginBottom: '16px' }}>
-                <h4 style={{ marginBottom: '8px', fontWeight: '600', color: '#5e6c84' }}>
+                <h4 style={{ marginBottom: '8px', fontWeight: '600', color: '#718096', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Tag size={16} />
                   Description
                 </h4>
                 <p style={{ color: '#172b4d', lineHeight: '1.5' }}>
@@ -152,7 +153,16 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
               </div>
             )}
 
-            <div style={{ fontSize: '12px', color: '#6b778c' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              fontSize: '14px', 
+              color: '#718096',
+              padding: '12px 0',
+              borderTop: '1px solid #e2e8f0'
+            }}>
+              <Calendar size={14} />
               Created: {new Date(ticket.createdAt).toLocaleDateString()}
             </div>
           </div>

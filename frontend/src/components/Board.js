@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 import Column from './Column';
 import { UPDATE_BOARD_MUTATION, CREATE_COLUMN_MUTATION } from '../graphql/queries';
-import { Plus } from 'lucide-react';
+import { Plus, Settings, Users, Filter, MoreHorizontal } from 'lucide-react';
 
 const Board = ({ board, columns, tickets, refetch }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -78,23 +78,43 @@ const Board = ({ board, columns, tickets, refetch }) => {
   return (
     <div>
       <div className="board-header">
-        {isEditingTitle ? (
-          <form onSubmit={handleTitleSubmit}>
-            <input
-              type="text"
-              value={boardTitle}
-              onChange={(e) => setBoardTitle(e.target.value)}
-              onBlur={handleTitleSubmit}
-              onKeyDown={handleTitleKeyDown}
-              autoFocus
-              className="board-title"
-            />
-          </form>
-        ) : (
-          <h1 className="board-title" onClick={handleTitleClick}>
-            {board?.name}
-          </h1>
-        )}
+        <div className="board-title-section">
+          {isEditingTitle ? (
+            <form onSubmit={handleTitleSubmit}>
+              <input
+                type="text"
+                value={boardTitle}
+                onChange={(e) => setBoardTitle(e.target.value)}
+                onBlur={handleTitleSubmit}
+                onKeyDown={handleTitleKeyDown}
+                autoFocus
+                className="board-title"
+              />
+            </form>
+          ) : (
+            <h1 className="board-title" onClick={handleTitleClick}>
+              {board?.name}
+            </h1>
+          )}
+        </div>
+        
+        <div className="board-actions">
+          <button className="board-action-btn" title="Board Settings">
+            <Settings size={16} />
+            Settings
+          </button>
+          <button className="board-action-btn" title="Share Board">
+            <Users size={16} />
+            Share
+          </button>
+          <button className="board-action-btn" title="Filter Cards">
+            <Filter size={16} />
+            Filter
+          </button>
+          <button className="board-action-btn" title="More Options">
+            <MoreHorizontal size={16} />
+          </button>
+        </div>
       </div>
 
       <Droppable droppableId="board" direction="horizontal" type="column">

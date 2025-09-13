@@ -3,7 +3,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 import Ticket from './Ticket';
 import { UPDATE_COLUMN_MUTATION, DELETE_COLUMN_MUTATION, CREATE_TICKET_MUTATION } from '../graphql/queries';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, MoreVertical, Edit3, Copy } from 'lucide-react';
 
 const Column = ({ column, tickets, index, refetch }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -127,13 +127,34 @@ const Column = ({ column, tickets, index, refetch }) => {
               </h3>
             )}
             
-            <button
-              className="delete-column-btn"
-              onClick={handleDeleteColumn}
-              title="Delete column"
-            >
-              <Trash2 size={16} />
-            </button>
+            <div className="column-actions">
+              <button
+                className="icon-btn"
+                onClick={handleTitleClick}
+                title="Edit column name"
+              >
+                <Edit3 size={14} />
+              </button>
+              <button
+                className="icon-btn"
+                title="Copy column"
+              >
+                <Copy size={14} />
+              </button>
+              <button
+                className="icon-btn"
+                title="More options"
+              >
+                <MoreVertical size={14} />
+              </button>
+              <button
+                className="icon-btn danger"
+                onClick={handleDeleteColumn}
+                title="Delete column"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
           </div>
 
           <Droppable droppableId={column.id} type="ticket">
