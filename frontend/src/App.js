@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useQuery, useMutation } from '@apollo/client';
 import Board from './components/Board';
+import BoardModal from './components/BoardModal';
 import { GET_BOARD_DATA, UPDATE_TICKET_MUTATION, UPDATE_COLUMN_MUTATION } from './graphql/queries';
 import LoadingSpinner from './components/LoadingSpinner';
+import { Plus } from 'lucide-react';
 
 function App() {
-  const [boardId] = useState('default-board');
+  const user_board = localStorage.getItem('user_board_id') || 'default-board';
+  const [boardId, setBoardId] = useState(user_board);
+  const [addNewBoard, setAddNewBoard] = useState(false)
   
   const { loading, error, data, refetch } = useQuery(GET_BOARD_DATA, {
     variables: { boardId },
@@ -15,6 +19,16 @@ function App() {
 
   const [updateTicket] = useMutation(UPDATE_TICKET_MUTATION);
   const [updateColumn] = useMutation(UPDATE_COLUMN_MUTATION);
+  
+  const handleSetAddNewBoard = () => {
+    setAddNewBoard(!addNewBoard);
+  }
+  
+  const onSetAddNewBoard = (boardId) => {
+    setBoardId(boardId);
+    setAddNewBoard(false);
+    localStorage.setItem('user_board_id', boardId);
+  }
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId, type } = result;
@@ -81,7 +95,7 @@ function App() {
           variables: {
             input: {
               id: draggableId,
-              column_id: destination.droppableId,
+              columnId: destination.droppableId,
               position: newPosition,
             },
           },
@@ -109,8 +123,17 @@ function App() {
   if (error) return <div className="error">Error: {error.message}</div>;
 
   return (
+    <>
+    {addNewBoard ? (
+      <BoardModal onSetBoardId={onSetAddNewBoard} />
+    ) : (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="board-container">
+        <button className="add-board-btn" onClick={handleSetAddNewBoard}>
+          <Plus size={16} />
+          Add a board
+        </button>
+        
         <Board 
           board={data.board}
           columns={data.columns}
@@ -119,6 +142,8 @@ function App() {
         />
       </div>
     </DragDropContext>
+    )}
+    </>
   );
 }
 

@@ -3,7 +3,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 import Column from './Column';
 import { UPDATE_BOARD_MUTATION, CREATE_COLUMN_MUTATION } from '../graphql/queries';
-import { Plus, Settings, Users, Filter, MoreHorizontal } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 const Board = ({ board, columns, tickets, refetch }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -96,24 +96,6 @@ const Board = ({ board, columns, tickets, refetch }) => {
               {board?.name}
             </h1>
           )}
-        </div>
-        
-        <div className="board-actions">
-          <button className="board-action-btn" title="Board Settings">
-            <Settings size={16} />
-            Settings
-          </button>
-          <button className="board-action-btn" title="Share Board">
-            <Users size={16} />
-            Share
-          </button>
-          <button className="board-action-btn" title="Filter Cards">
-            <Filter size={16} />
-            Filter
-          </button>
-          <button className="board-action-btn" title="More Options">
-            <MoreHorizontal size={16} />
-          </button>
         </div>
       </div>
 
