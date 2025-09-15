@@ -1,11 +1,21 @@
-# Trello-like Task Management Application
+# Opus1 Task Management Application
 
 A full-stack Trello-like task management application built with React frontend, Python GraphQL backend, and local DynamoDB.
+
+## Implementation
+I used bolt.new to assist in this project.  This was mostly to get me to the point of being able to iterate with speed.  Once bolt produced the first round of code, I took over and started building it.  When I was happy with the first major version, I asked bolt to create some test cases.  
+
+I did 2 POCs before interacting with bolt.  
+1. Python implementation of GraphQL - I know python, I know GraphQL.  I hadn't done Python GraphQL before
+2. DynamoDB local.  I wanted to hew close to the Opus1 stack and needed to prove it out
+
+I wanted to fail quickly without getting too deep into the weeds of why an implementation would work or not.  
 
 ## Features
 
 ### Board Management
 - Display and rename board titles
+- Create and delete boards
 - Persistent board state with automatic reloading
 
 ### Column Management
@@ -22,11 +32,16 @@ A full-stack Trello-like task management application built with React frontend, 
 - Delete tickets with confirmation
 
 ### Technical Features
-- Responsive design that works on all devices
+- Responsive design that works on all devices (note: this RWD maintains the horizontal column layout in favor of legibility over disorienting users with a vertial layout on smaller devices.)
 - Real-time updates with GraphQL polling
 - Smooth drag-and-drop interactions
 - Error handling and loading states
 - Containerized deployment with Docker
+
+## Assumptions
+1. I chose to use a local version of dynamodb in order to showcase this app in the Opus1 tech stack faithfully.  As I don't have an AWS account, I decided not to complete the optional deployed version of this.  We can discuss how this would be deployed in a real AWS production environment using IaC patterns.
+2. This implementation assumes that it is acceptable to hard delete rows in the database.  We can discuss how we might implmement a soft delete functionality.
+3. This implementation assumes only one user will interact with the data because it can only be spun up locally.  This was sticky and it concerns me that that is a missed requirement.  We can chat about how we could make this multi-user.
 
 ## Getting Started
 
@@ -39,13 +54,12 @@ A full-stack Trello-like task management application built with React frontend, 
 
 2. Start all services using Docker Compose:
 ```bash
-docker-compose up --build
+docker compose up 
 ```
 
 3. The application will be available at:
    - Frontend: http://localhost:3000
    - Backend GraphQL API: http://localhost:4000/graphql
-   - DynamoDB Admin: http://localhost:8000
 
 ### Architecture
 
@@ -57,9 +71,22 @@ docker-compose up --build
 ### Default Data
 
 The application comes with sample data including:
-- A default board named "My Trello Board"
+- A default board named "Opus1 Task Board"
 - Three columns: "To Do", "In Progress", "Done"
 - Sample tickets distributed across columns
+- Once you start working with custom boards, you can't navigate back to the default board except to clear localStorage and refresh
+
+### Testing
+To run the suites of front end and back end tests:
+1. Run ```docker compose up```
+2. Open a new command prompt
+3. For testing backend code:
+- From the project root, run ```cd backend```
+- Run ```docker exec trello-backend python -m pytest -v```
+4. For testing the frontend code:
+- From the project root, run ```cd frontend```
+- Run ```docker exec trello-frontend npm test```
+5. Watch excitedly!
 
 ### Development
 
@@ -75,3 +102,12 @@ docker-compose down
 ```
 
 This will stop all containers while preserving your data in the DynamoDB instance.
+
+## Next steps
+Here are some perceived next steps for this application:
+- Implement a single table design model
+- Enable multiple users to interact with this application at once
+- Implement a soft delete functionality
+- Implement a My Boards functionality where a user could see all the boards that they have created in the application and toggle in between them without losing data
+- Implement auth & security
+- Implement sharing

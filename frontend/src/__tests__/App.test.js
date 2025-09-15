@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { useQuery, useMutation } from '@apollo/client';
 import App from '../App';
