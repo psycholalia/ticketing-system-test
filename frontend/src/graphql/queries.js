@@ -36,6 +36,16 @@ export const UPDATE_BOARD_MUTATION = gql`
   }
 `;
 
+export const CREATE_BOARD_MUTATION = gql`
+  mutation CreateBoard($input: CreateBoardInput!) {
+    createBoard(input: $input) {
+      id
+      name
+      createdAt
+    }
+  }
+`;
+
 export const CREATE_COLUMN_MUTATION = gql`
   mutation CreateColumn($input: CreateColumnInput!) {
     createColumn(input: $input) {
