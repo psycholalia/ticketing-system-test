@@ -55,8 +55,6 @@ describe('TicketModal Component', () => {
     const closeButton = screen.getByTitle('Close');
     await user.click(closeButton);
     
-    mockOnClose();
-    
     expect(mockOnClose).toHaveBeenCalled();
   });
 
@@ -73,8 +71,6 @@ describe('TicketModal Component', () => {
 
     const overlay = screen.getByRole('dialog').parentElement;
     await user.click(overlay);
-
-    mockOnClose();
 
     expect(mockOnClose).toHaveBeenCalled();
   });
@@ -131,9 +127,6 @@ describe('TicketModal Component', () => {
         }
       }
     }
-    
-    mockUpdateTicket(mockValues);
-    
     await waitFor(() => {
       expect(mockUpdateTicket).toHaveBeenCalledWith(mockValues);
     });

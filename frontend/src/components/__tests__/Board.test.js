@@ -106,7 +106,6 @@ describe('Board Component', () => {
     await user.type(input, 'Updated Board Title');
     await user.keyboard('[Enter]');
 
-    mockUpdateBoard();
     await waitFor(() => {
       expect(mockUpdateBoard).toHaveBeenCalled();
     });
