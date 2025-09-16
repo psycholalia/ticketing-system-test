@@ -123,6 +123,13 @@ async def seed_data():
         tickets_table.put_item(Item=ticket)
     
     print("Seeded initial data successfully")
+
+def get_tables():
+    tables = dynamodb_client.list_tables()
+    if 'TableNames' in tables:
+        return tables
+    else:
+        return []
 """
 BOARDS - create all CRUD operations for boards
 """
