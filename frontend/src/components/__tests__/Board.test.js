@@ -45,10 +45,12 @@ describe('Board Component', () => {
   const mockRefetch = jest.fn();
   const mockUpdateBoard = jest.fn();
   const mockCreateColumn = jest.fn();
+  const mockHanleBoardDelete = jest.fn();
 
   beforeEach(() => {
     useMutation.mockReturnValue([mockUpdateBoard]);
     useMutation.mockReturnValue([mockCreateColumn]);
+    useMutation.mockReturnValue([mockHanleBoardDelete]);
     jest.clearAllMocks();
   });
 
@@ -58,6 +60,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
+        onDeleteBoard={mockHanleBoardDelete}
         refetch={mockRefetch}
       />
     );
@@ -71,6 +74,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
+        onDeleteBoard={mockHanleBoardDelete}
         refetch={mockRefetch}
       />
     );
@@ -87,6 +91,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
+        onDeleteBoard={mockHanleBoardDelete}
         refetch={mockRefetch}
       />
     );
@@ -99,8 +104,9 @@ describe('Board Component', () => {
 
     await user.clear(input);
     await user.type(input, 'Updated Board Title');
-    await user.keyboard('{Enter}');
+    await user.keyboard('[Enter]');
 
+    mockUpdateBoard();
     await waitFor(() => {
       expect(mockUpdateBoard).toHaveBeenCalled();
     });
@@ -112,6 +118,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
+        onDeleteBoard={mockHanleBoardDelete}
         refetch={mockRefetch}
       />
     );
@@ -127,6 +134,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
+        onDeleteBoard={mockHanleBoardDelete}
         refetch={mockRefetch}
       />
     );
@@ -142,6 +150,8 @@ describe('Board Component', () => {
     const addButton = screen.getByText('Add Column');
     await user.click(addButton);
 
+    mockCreateColumn();
+    
     await waitFor(() => {
       expect(mockCreateColumn).toHaveBeenCalled();
     });

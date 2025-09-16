@@ -62,7 +62,7 @@ const TicketModal = ({ ticket, onClose, refetch }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
+    <div role="dialog" className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal">
         <div className="modal-header">
           <h2 className="modal-title">

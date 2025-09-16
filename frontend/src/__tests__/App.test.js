@@ -38,15 +38,8 @@ describe('App Component', () => {
   const mockUpdateColumn = jest.fn();
 
   beforeEach(() => {
-    useMutation.mockImplementation((mutation) => {
-      if (mutation.toString().includes('UpdateTicket')) {
-        return [mockUpdateTicket];
-      }
-      if (mutation.toString().includes('UpdateColumn')) {
-        return [mockUpdateColumn];
-      }
-      return [jest.fn()];
-    });
+    useMutation.mockReturnValue([mockUpdateTicket]);
+    useMutation.mockReturnValue([mockUpdateColumn]);
     jest.clearAllMocks();
   });
 
