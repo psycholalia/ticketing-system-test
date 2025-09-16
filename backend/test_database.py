@@ -35,7 +35,7 @@ def test_board_operations(mock_dynamodb_setup):
     # Test get board
     board = get_board('default-board')
     assert board is not None
-    assert board['name'] == 'My Trello Board'
+    assert board['name'] == 'My Opus1 Board'
     
     # Test update board
     updated_board = update_board('default-board', 'Updated Board Name')
