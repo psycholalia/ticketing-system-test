@@ -1,11 +1,15 @@
-import React, { act } from 'react';
+import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import Board from '../Board';
+import { UPDATE_BOARD_MUTATION, CREATE_COLUMN_MUTATION, DELETE_BOARD_MUTATION } from '../../graphql/queries';
 
-// Mock the hooks
-jest.mock('@apollo/client');
+// Mock Apollo Client
+jest.mock('@apollo/client', () => ({
+  ...jest.requireActual('@apollo/client'),
+  useMutation: jest.fn(),
+}));
 
 const mockBoard = {
   id: 'board-1',
@@ -43,14 +47,39 @@ const mockTickets = [
 
 describe('Board Component', () => {
   const mockRefetch = jest.fn();
+  const mockOnDeleteBoard = jest.fn();
   const mockUpdateBoard = jest.fn();
   const mockCreateColumn = jest.fn();
-  const mockHanleBoardDelete = jest.fn();
+  const mockDeleteBoard = jest.fn();
 
   beforeEach(() => {
-    useMutation.mockReturnValue([mockUpdateBoard]);
-    useMutation.mockReturnValue([mockCreateColumn]);
-    useMutation.mockReturnValue([mockHanleBoardDelete]);
+    // Mock useMutation to return different functions based on the mutation
+    useMutation.mockImplementation((mutation) => {
+      if (mutation === UPDATE_BOARD_MUTATION) {
+        return [mockUpdateBoard, { loading: false, error: null }];
+      }
+      if (mutation === CREATE_COLUMN_MUTATION) {
+        return [mockCreateColumn, { loading: false, error: null }];
+      }
+      if (mutation === DELETE_BOARD_MUTATION) {
+        return [mockDeleteBoard, { loading: false, error: null }];
+      }
+      return [jest.fn(), { loading: false, error: null }];
+    });
+
+    // Setup mock resolved values
+    mockUpdateBoard.mockResolvedValue({
+      data: { updateBoard: { id: 'board-1', name: 'Updated Board Title', createdAt: '2023-01-01T00:00:00' } }
+    });
+    
+    mockCreateColumn.mockResolvedValue({
+      data: { createColumn: { id: 'col-new', boardId: 'board-1', name: 'New Column', position: 2, createdAt: '2023-01-01T00:00:00' } }
+    });
+    
+    mockDeleteBoard.mockResolvedValue({
+      data: { deleteBoard: true }
+    });
+
     jest.clearAllMocks();
   });
 
@@ -60,7 +89,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
-        onDeleteBoard={mockHanleBoardDelete}
+        onDeleteBoard={mockOnDeleteBoard}
         refetch={mockRefetch}
       />
     );
@@ -74,7 +103,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
-        onDeleteBoard={mockHanleBoardDelete}
+        onDeleteBoard={mockOnDeleteBoard}
         refetch={mockRefetch}
       />
     );
@@ -83,7 +112,7 @@ describe('Board Component', () => {
     expect(screen.getByText('In Progress')).toBeInTheDocument();
   });
 
-  test('allows board title editing', async () => {
+  test('allows board title editing and calls mutation with correct variables', async () => {
     const user = userEvent.setup();
     
     render(
@@ -91,7 +120,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
-        onDeleteBoard={mockHanleBoardDelete}
+        onDeleteBoard={mockOnDeleteBoard}
         refetch={mockRefetch}
       />
     );
@@ -107,8 +136,12 @@ describe('Board Component', () => {
     await user.keyboard('[Enter]');
 
     await waitFor(() => {
-      expect(mockUpdateBoard).toHaveBeenCalled();
+      expect(mockUpdateBoard).toHaveBeenCalledWith({
+        variables: { id: 'board-1', name: 'Updated Board Title' }
+      });
     });
+
+    expect(mockRefetch).toHaveBeenCalled();
   });
 
   test('shows add column button', () => {
@@ -117,7 +150,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
-        onDeleteBoard={mockHanleBoardDelete}
+        onDeleteBoard={mockOnDeleteBoard}
         refetch={mockRefetch}
       />
     );
@@ -125,7 +158,7 @@ describe('Board Component', () => {
     expect(screen.getByText('Add another column')).toBeInTheDocument();
   });
 
-  test('allows adding new column', async () => {
+  test('allows adding new column and calls mutation with correct variables', async () => {
     const user = userEvent.setup();
     
     render(
@@ -133,7 +166,7 @@ describe('Board Component', () => {
         board={mockBoard}
         columns={mockColumns}
         tickets={mockTickets}
-        onDeleteBoard={mockHanleBoardDelete}
+        onDeleteBoard={mockOnDeleteBoard}
         refetch={mockRefetch}
       />
     );
@@ -149,10 +182,48 @@ describe('Board Component', () => {
     const addButton = screen.getByText('Add Column');
     await user.click(addButton);
 
-    mockCreateColumn();
-    
     await waitFor(() => {
-      expect(mockCreateColumn).toHaveBeenCalled();
+      expect(mockCreateColumn).toHaveBeenCalledWith({
+        variables: {
+          input: {
+            boardId: 'board-1',
+            name: 'New Column',
+            position: 2
+          }
+        }
+      });
     });
+
+    expect(mockRefetch).toHaveBeenCalled();
+  });
+
+  test('handles board deletion with confirmation', async () => {
+    const user = userEvent.setup();
+    window.confirm = jest.fn(() => true);
+    
+    render(
+      <Board 
+        board={mockBoard}
+        columns={mockColumns}
+        tickets={mockTickets}
+        onDeleteBoard={mockOnDeleteBoard}
+        refetch={mockRefetch}
+      />
+    );
+
+    const deleteButton = screen.getByTitle('Delete Board');
+    await user.click(deleteButton);
+
+    expect(window.confirm).toHaveBeenCalledWith(
+      'Are you sure you want to delete this board? All tickets and columns in this board will be deleted.'
+    );
+
+    await waitFor(() => {
+      expect(mockDeleteBoard).toHaveBeenCalledWith({
+        variables: { id: 'board-1' }
+      });
+    });
+
+    expect(mockOnDeleteBoard).toHaveBeenCalled();
   });
 });
