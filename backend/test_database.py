@@ -2,7 +2,7 @@ import pytest
 import boto3
 from moto import mock_aws
 from database import (
-    init_db, seed_data, get_boards, get_board, update_board,
+    init_db, get_tables, seed_data, get_boards, get_board, update_board,
     get_columns_by_board, create_column, update_column, delete_column,
     get_tickets_by_column, create_ticket, update_ticket, delete_ticket,
     get_all_tickets_by_board
@@ -18,13 +18,12 @@ def mock_dynamodb_setup():
         yield
 
 @mock_aws
-def test_init_db():
+def test_init_db(mock_dynamodb_setup):
     """Test database initialization"""
     init_db()
     
     # Verify tables were created
-    dynamodb = boto3.client('dynamodb')
-    tables = dynamodb.list_tables()
+    tables = get_tables()
     
     assert 'boards' in tables['TableNames']
     assert 'columns' in tables['TableNames']
@@ -35,7 +34,7 @@ def test_board_operations(mock_dynamodb_setup):
     # Test get board
     board = get_board('default-board')
     assert board is not None
-    assert board['name'] == 'My Trello Board'
+    assert board['name'] == 'Opus1 Task Board'
     
     # Test update board
     updated_board = update_board('default-board', 'Updated Board Name')

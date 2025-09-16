@@ -32,18 +32,9 @@ describe('Column Component', () => {
   const mockCreateTicket = jest.fn();
 
   beforeEach(() => {
-    useMutation.mockImplementation((mutation) => {
-      if (mutation.toString().includes('UpdateColumn')) {
-        return [mockUpdateColumn];
-      }
-      if (mutation.toString().includes('DeleteColumn')) {
-        return [mockDeleteColumn];
-      }
-      if (mutation.toString().includes('CreateTicket')) {
-        return [mockCreateTicket];
-      }
-      return [jest.fn()];
-    });
+    useMutation.mockReturnValue([mockUpdateColumn]);
+    useMutation.mockReturnValue([mockDeleteColumn]);
+    useMutation.mockReturnValue([mockCreateTicket]);
     jest.clearAllMocks();
   });
 
@@ -94,7 +85,7 @@ describe('Column Component', () => {
     await user.clear(input);
     await user.type(input, 'Updated Column');
     await user.keyboard('{Enter}');
-
+    
     await waitFor(() => {
       expect(mockUpdateColumn).toHaveBeenCalled();
     });

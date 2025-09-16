@@ -2,6 +2,8 @@ import React, { act } from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Ticket from '../Ticket';
+import { useMutation } from '@apollo/client'
+import TicketModal from '../TicketModal';
 
 const mockTicket = {
   id: 'ticket-1',
@@ -14,8 +16,11 @@ const mockTicket = {
 
 describe('Ticket Component', () => {
   const mockRefetch = jest.fn();
+  const mockOnClose = jest.fn();
+  const mockUpdateTicket = jest.fn();
 
   beforeEach(() => {
+    useMutation.mockReturnValue([mockUpdateTicket]);
     jest.clearAllMocks();
   });
 

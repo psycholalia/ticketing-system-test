@@ -22,15 +22,8 @@ describe('TicketModal Component', () => {
   const mockDeleteTicket = jest.fn();
 
   beforeEach(() => {
-    useMutation.mockImplementation((mutation) => {
-      if (mutation.toString().includes('UpdateTicket')) {
-        return [mockUpdateTicket];
-      }
-      if (mutation.toString().includes('DeleteTicket')) {
-        return [mockDeleteTicket];
-      }
-      return [jest.fn()];
-    });
+    useMutation.mockReturnValue([mockUpdateTicket]);
+    useMutation.mockReturnValue([mockDeleteTicket]);    
     jest.clearAllMocks();
   });
 
@@ -61,7 +54,7 @@ describe('TicketModal Component', () => {
 
     const closeButton = screen.getByTitle('Close');
     await user.click(closeButton);
-
+    
     expect(mockOnClose).toHaveBeenCalled();
   });
 
@@ -125,16 +118,17 @@ describe('TicketModal Component', () => {
     const saveButton = screen.getByText('Save Changes');
     await user.click(saveButton);
 
-    await waitFor(() => {
-      expect(mockUpdateTicket).toHaveBeenCalledWith({
-        variables: {
-          input: {
-            id: 'ticket-1',
-            title: 'Updated Ticket',
-            description: 'Test Description'
-          }
+    const mockValues = {
+      variables: {
+        input: {
+          id: 'ticket-1',
+          title: 'Updated Ticket',
+          description: 'Test Description'
         }
-      });
+      }
+    }
+    await waitFor(() => {
+      expect(mockUpdateTicket).toHaveBeenCalledWith(mockValues);
     });
   });
 
