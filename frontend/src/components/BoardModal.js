@@ -28,7 +28,6 @@ const BoardModal = ({ onSetBoardId, onClose, refetch }) => {
                 },
             });
             // refetch();
-            console.log(board);
             onSetBoardId(board.data.createBoard.id);
             setNewBoardName('');
         } catch (error) {

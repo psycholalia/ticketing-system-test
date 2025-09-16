@@ -46,6 +46,12 @@ export const CREATE_BOARD_MUTATION = gql`
   }
 `;
 
+export const DELETE_BOARD_MUTATION = gql`
+  mutation DeleteBoard($id: String!) {
+    deleteBoard(id: $id)
+  }
+`;
+
 export const CREATE_COLUMN_MUTATION = gql`
   mutation CreateColumn($input: CreateColumnInput!) {
     createColumn(input: $input) {

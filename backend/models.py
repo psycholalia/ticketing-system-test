@@ -1,6 +1,10 @@
 import strawberry
 from typing import List, Optional
 
+"""
+TYPES
+"""
+
 @strawberry.type
 class Board:
     id: str
@@ -23,6 +27,13 @@ class Ticket:
     description: str
     position: int
     created_at: str
+
+"""
+INPUTS
+"""
+@strawberry.input
+class CreateBoardInput:
+    name: str
 
 @strawberry.input
 class CreateColumnInput:

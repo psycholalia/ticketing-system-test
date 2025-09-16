@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 import Column from './Column';
-import { UPDATE_BOARD_MUTATION, CREATE_COLUMN_MUTATION } from '../graphql/queries';
-import { Plus } from 'lucide-react';
+import { UPDATE_BOARD_MUTATION, CREATE_COLUMN_MUTATION, DELETE_BOARD_MUTATION } from '../graphql/queries';
+import { Plus, Trash2 } from 'lucide-react';
 
-const Board = ({ board, columns, tickets, refetch }) => {
+const Board = ({ board, columns, tickets, onDeleteBoard, refetch }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [boardTitle, setBoardTitle] = useState(board?.name || '');
   const [isAddingColumn, setIsAddingColumn] = useState(false);
@@ -13,6 +13,7 @@ const Board = ({ board, columns, tickets, refetch }) => {
 
   const [updateBoard] = useMutation(UPDATE_BOARD_MUTATION);
   const [createColumn] = useMutation(CREATE_COLUMN_MUTATION);
+  const [deleteBoard] = useMutation(DELETE_BOARD_MUTATION);
 
   const handleTitleClick = () => {
     setIsEditingTitle(true);
@@ -70,6 +71,20 @@ const Board = ({ board, columns, tickets, refetch }) => {
   const handleCancelAddColumn = () => {
     setNewColumnName('');
     setIsAddingColumn(false);
+  };
+
+    const handleDeleteBoard = async () => {
+    if (window.confirm('Are you sure you want to delete this board? All tickets and columns in this board will be deleted.')) {
+      try {
+        await deleteBoard({
+          variables: { id: board.id },
+        });
+        localStorage.removeItem('user_board_id');
+        onDeleteBoard();
+      } catch (error) {
+        console.error('Error deleting column:', error);
+      }
+    }
   };
 
   // Sort columns by position
@@ -150,6 +165,14 @@ const Board = ({ board, columns, tickets, refetch }) => {
           </div>
         )}
       </Droppable>
+
+      <button
+        className="board-action-btn danger"
+        onClick={handleDeleteBoard}
+        title="Delete Board"
+      >
+        <Trash2 size={32} />
+      </button>
     </div>
   );
 };
