@@ -94,8 +94,8 @@ async def seed_data():
     board_id = "default-board"
     board_data = {
         'id': board_id,
-        'name': 'My Trello Board',
-        'created_at': datetime.utcnow().isoformat()
+        'name': 'Opus1 Task Board',
+        'created_at': datetime.utcnow().isoformat(),
     }
     boards_table.put_item(Item=board_data)
     
@@ -123,7 +123,9 @@ async def seed_data():
         tickets_table.put_item(Item=ticket)
     
     print("Seeded initial data successfully")
-
+"""
+BOARDS - create all CRUD operations for boards
+"""
 def get_boards():
     table = dynamodb.Table('boards')
     response = table.scan()
@@ -145,6 +147,39 @@ def update_board(board_id, name):
     )
     return response['Attributes']
 
+def create_board(name):
+    table = dynamodb.Table('boards')
+    item = {
+        'id': str(uuid.uuid4()),
+        'name': name,
+        'created_at': datetime.utcnow().isoformat()
+    }
+    table.put_item(Item=item)
+    return item
+
+def delete_board(board_id):
+    print('board_id', board_id)
+    # First get all columns in this board delete all tickets in  column
+    tickets_table = dynamodb.Table('tickets')
+    columns_table = dynamodb.Table('columns')
+    boards_table = dynamodb.Table('boards')
+
+    column_data = columns_table.query(
+        IndexName='board_id-index',
+        KeyConditionExpression=boto3.dynamodb.conditions.Key('board_id').eq(board_id)
+    )
+    print('columndata1', column_data)
+    # loop thru column data to get ticket data/column, delete tickets, then delete column, then delete board
+    if 'Items' in column_data and column_data['Items']:
+        for column in column_data['Items']:
+            delete_column(column['id'])
+
+    boards_table.delete_item(Key={'id': board_id})
+    return True
+
+"""
+COLUMNS - CRUD operations for columns table
+"""
 def get_columns_by_board(board_id):
     table = dynamodb.Table('columns')
     response = table.query(
@@ -207,6 +242,10 @@ def delete_column(column_id):
     columns_table = dynamodb.Table('columns')
     columns_table.delete_item(Key={'id': column_id})
     return True
+
+"""
+TICKETS - CRUD operations for tickets table
+"""
 
 def get_tickets_by_column(column_id):
     table = dynamodb.Table('tickets')

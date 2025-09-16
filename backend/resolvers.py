@@ -1,6 +1,8 @@
 import strawberry
 from typing import List, Optional
-from models import Board, Column, Ticket, CreateColumnInput, UpdateColumnInput, CreateTicketInput, UpdateTicketInput
+from models import (
+    Board, Column, Ticket, CreateColumnInput, UpdateColumnInput, CreateTicketInput, UpdateTicketInput, CreateBoardInput
+)
 import database as db
 
 @strawberry.type
@@ -40,10 +42,19 @@ class Mutation:
         return Board(**board_data)
     
     @strawberry.mutation
+    def create_board(self, input: CreateBoardInput) -> Board:
+        board_data = db.create_board(input.name)
+        return Board(**board_data)
+    
+    @strawberry.mutation
+    def delete_board(self, id: str) -> bool:
+        return db.delete_board(id)
+    
+    @strawberry.mutation
     def create_column(self, input: CreateColumnInput) -> Column:
         column_data = db.create_column(input.board_id, input.name, input.position)
         return Column(**column_data)
-    
+
     @strawberry.mutation
     def update_column(self, input: UpdateColumnInput) -> Column:
         column_data = db.update_column(input.id, input.name, input.position)
