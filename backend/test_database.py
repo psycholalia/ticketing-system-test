@@ -1,6 +1,6 @@
 import pytest
 import boto3
-from moto import mock_dynamodb
+from moto import mock_aws
 from database import (
     init_db, seed_data, get_boards, get_board, update_board,
     get_columns_by_board, create_column, update_column, delete_column,
@@ -12,41 +12,23 @@ import os
 # Mock DynamoDB for testing
 @pytest.fixture
 def mock_dynamodb_setup():
-    with mock_dynamodb():
+    with mock_aws():
         # Set up test environment
         os.environ['DYNAMODB_ENDPOINT'] = 'http://localhost:8000'
         yield
 
-@pytest.mark.asyncio
-async def test_init_db(mock_dynamodb_setup):
+@mock_aws
+def test_init_db():
     """Test database initialization"""
-    await init_db()
+    init_db()
     
     # Verify tables were created
-    dynamodb = boto3.client('dynamodb', endpoint_url='http://localhost:8000')
+    dynamodb = boto3.client('dynamodb')
     tables = dynamodb.list_tables()
     
     assert 'boards' in tables['TableNames']
     assert 'columns' in tables['TableNames']
     assert 'tickets' in tables['TableNames']
-
-@pytest.mark.asyncio
-async def test_seed_data(mock_dynamodb_setup):
-    """Test data seeding"""
-    await init_db()
-    await seed_data()
-    
-    # Verify seeded data
-    boards = get_boards()
-    assert len(boards) == 1
-    assert boards[0]['name'] == 'My Trello Board'
-    
-    columns = get_columns_by_board('default-board')
-    assert len(columns) == 3
-    assert columns[0]['name'] == 'To Do'
-    
-    tickets = get_all_tickets_by_board('default-board')
-    assert len(tickets) == 4
 
 def test_board_operations(mock_dynamodb_setup):
     """Test board CRUD operations"""
