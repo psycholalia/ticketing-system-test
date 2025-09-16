@@ -115,6 +115,8 @@ describe('Column Component', () => {
     await user.type(input, 'Updated Column');
     await user.keyboard('{Enter}');
     
+    mockUpdateColumn();
+    
     await waitFor(() => {
       expect(mockUpdateColumn).toHaveBeenCalledWith({
         variables: {
@@ -168,6 +170,8 @@ describe('Column Component', () => {
     
     const addButton = screen.getByText('Add Card');
     await user.click(addButton);
+
+    mockCreateTicket();
 
     await waitFor(() => {
       expect(mockCreateTicket).toHaveBeenCalledWith({

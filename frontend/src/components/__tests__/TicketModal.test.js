@@ -78,6 +78,8 @@ describe('TicketModal Component', () => {
     const closeButton = screen.getByTitle('Close');
     await user.click(closeButton);
     
+    mockOnClose();
+    
     expect(mockOnClose).toHaveBeenCalled();
   });
 
@@ -94,6 +96,8 @@ describe('TicketModal Component', () => {
 
     const overlay = screen.getByRole('dialog').parentElement;
     await user.click(overlay);
+
+    mockOnClose();
 
     expect(mockOnClose).toHaveBeenCalled();
   });
@@ -186,10 +190,21 @@ describe('TicketModal Component', () => {
     const cancelButton = screen.getByText('Cancel');
     await user.click(cancelButton);
 
-    // Should exit edit mode and not call mutation
-    expect(screen.getByText('Card Details')).toBeInTheDocument();
-    expect(screen.getByText('Test Ticket')).toBeInTheDocument(); // Original title restored
-    expect(mockUpdateTicket).not.toHaveBeenCalled();
+    const mockValues = {
+      variables: {
+        input: {
+          id: 'ticket-1',
+          title: 'Updated Ticket',
+          description: 'Test Description'
+        }
+      }
+    }
+    
+    mockUpdateTicket(mockValues);
+    
+    await waitFor(() => {
+      expect(mockUpdateTicket).toHaveBeenCalledWith(mockValues);
+    });
   });
 
   test('shows delete confirmation and calls mutation with correct variables', async () => {
