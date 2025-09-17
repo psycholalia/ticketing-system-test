@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { UPDATE_TICKET_MUTATION, DELETE_TICKET_MUTATION } from '../graphql/queries';
-import { X, Trash2, Edit3, Save, Calendar, User, Tag } from 'lucide-react';
+import { X, Trash2, Edit3, Save, Calendar, Tag } from 'lucide-react';
 
 const TicketModal = ({ ticket, onClose, refetch }) => {
   const [isEditing, setIsEditing] = useState(false);

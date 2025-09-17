@@ -1,7 +1,6 @@
 import boto3
 import os
 from botocore.exceptions import ClientError
-import asyncio
 from datetime import datetime
 import uuid
 
@@ -154,10 +153,12 @@ def update_board(board_id, name):
     )
     return response['Attributes']
 
-def create_board(name):
+def create_board(name, id=None):
+    if not id:
+        id = str(uuid.uuid4())
     table = dynamodb.Table('boards')
     item = {
-        'id': str(uuid.uuid4()),
+        'id': id,
         'name': name,
         'created_at': datetime.utcnow().isoformat()
     }
@@ -165,7 +166,6 @@ def create_board(name):
     return item
 
 def delete_board(board_id):
-    print('board_id', board_id)
     # First get all columns in this board delete all tickets in  column
     tickets_table = dynamodb.Table('tickets')
     columns_table = dynamodb.Table('columns')
@@ -175,7 +175,6 @@ def delete_board(board_id):
         IndexName='board_id-index',
         KeyConditionExpression=boto3.dynamodb.conditions.Key('board_id').eq(board_id)
     )
-    print('columndata1', column_data)
     # loop thru column data to get ticket data/column, delete tickets, then delete column, then delete board
     if 'Items' in column_data and column_data['Items']:
         for column in column_data['Items']:
