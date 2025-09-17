@@ -116,4 +116,7 @@ Here are some perceived next steps for this application:
 
 ### Tech Debt
 - Fix deprecation warnings highlighted by backend tests
+- Implement more robust error handling
+- Implement more robust test cases (not just happy path)
 - Fix DND opacity
+- Implement OTEL, or other logging/monitoring solution
