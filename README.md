@@ -105,9 +105,15 @@ This will stop all containers while preserving your data in the DynamoDB instanc
 
 ## Next steps
 Here are some perceived next steps for this application:
-- Implement a single table design model
+
+### Features
+- Implement a single table design model for DynamoDB 
 - Enable multiple users to interact with this application at once
 - Implement a soft delete functionality
 - Implement a My Boards functionality where a user could see all the boards that they have created in the application and toggle in between them without losing data
 - Implement auth & security
 - Implement sharing
+
+### Tech Debt
+- Fix deprecation warnings highlighted by backend tests
+- 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import TicketModal from './TicketModal';
-import { Edit3, Trash2, Clock } from 'lucide-react';
+import { Edit3, Clock } from 'lucide-react';
 
 const Ticket = ({ ticket, index, refetch }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

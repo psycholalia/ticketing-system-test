@@ -1,5 +1,4 @@
 import pytest
-import boto3
 from moto import mock_aws
 from database import (
     init_db, get_tables, seed_data, get_boards, get_board, update_board,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useMutation } from '@apollo/client';
 import Board from '../Board';
@@ -135,7 +135,6 @@ describe('Board Component', () => {
     await user.type(input, 'Updated Board Title');
     await user.keyboard('[Enter]');
 
-    mockUpdateBoard();
     await waitFor(() => {
       expect(mockUpdateBoard).toHaveBeenCalledWith({
         variables: { id: 'board-1', name: 'Updated Board Title' }

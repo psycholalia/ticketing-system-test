@@ -1,7 +1,6 @@
 import boto3
 import os
 from botocore.exceptions import ClientError
-import asyncio
 from datetime import datetime
 import uuid
 
