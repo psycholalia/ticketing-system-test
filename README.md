@@ -116,4 +116,4 @@ Here are some perceived next steps for this application:
 
 ### Tech Debt
 - Fix deprecation warnings highlighted by backend tests
-- 
+- Fix DND opacity

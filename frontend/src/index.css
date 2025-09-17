@@ -267,6 +267,7 @@ code {
   overflow-y: auto;
   min-height: 100px;
   padding-right: 4px;
+  background-color: rgba(244,245,247,00.2) !important;
 }
 
 .tickets-container::-webkit-scrollbar {
@@ -297,7 +298,8 @@ code {
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid #e2e8f0;
-  position: relative;
+  top: auto !important;
+  left: auto !important;
 }
 
 .ticket:hover {
