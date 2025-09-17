@@ -82,10 +82,10 @@ To run the suites of front end and back end tests:
 2. Open a new command prompt
 3. For testing backend code:
 - From the project root, run ```cd backend```
-- Run ```docker exec trello-backend python -m pytest -v```
+- Run ```docker exec opus1-backend python -m pytest -v```
 4. For testing the frontend code:
 - From the project root, run ```cd frontend```
-- Run ```docker exec trello-frontend npm test```
+- Run ```docker exec opus1-frontend npm test```
 5. Watch excitedly!
 
 ### Development

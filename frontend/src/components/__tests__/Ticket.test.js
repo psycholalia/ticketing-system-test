@@ -2,6 +2,13 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Ticket from '../Ticket';
+import { useMutation } from '@apollo/client'
+import { UPDATE_TICKET_MUTATION } from '../../graphql/queries';
+
+jest.mock('@apollo/client', () => ({
+  ...jest.requireActual('@apollo/client'),
+  useMutation: jest.fn(),
+}));
 
 const mockTicket = {
   id: 'ticket-1',
@@ -14,8 +21,15 @@ const mockTicket = {
 
 describe('Ticket Component', () => {
   const mockRefetch = jest.fn();
+  const mockUpdateTicket = jest.fn();
 
-  beforeEach(() => {
+  beforeEach(() => {    
+    useMutation.mockImplementation((mutation) => {
+        if (mutation === UPDATE_TICKET_MUTATION) {
+          return [mockUpdateTicket, { loading: false, error: null }];
+        }
+        return [jest.fn(), { loading: false, error: null }];
+      });
     jest.clearAllMocks();
   });
 
