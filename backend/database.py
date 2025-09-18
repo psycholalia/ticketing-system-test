@@ -6,8 +6,8 @@ import uuid
 
 # DynamoDB setup
 dynamodb_endpoint = os.getenv('DYNAMODB_ENDPOINT', 'http://localhost:8000')
-dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint)
-dynamodb_client = boto3.client('dynamodb', endpoint_url=dynamodb_endpoint)
+dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint, region_name='us-west-2')
+dynamodb_client = boto3.client('dynamodb', endpoint_url=dynamodb_endpoint, region_name='us-west-2')
 
 async def init_db():
     """Initialize DynamoDB tables"""

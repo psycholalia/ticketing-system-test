@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 4000
 
-CMD ["python", "src/app.py"]
+CMD ["python", "app.py"]
