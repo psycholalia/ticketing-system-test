@@ -108,6 +108,7 @@ Here are some perceived next steps for this application:
 
 ### Features
 - Implement a single table design model for DynamoDB 
+- Fully implement a delete board workflow on the front end
 - Enable multiple users to interact with this application at once
 - Implement a soft delete functionality
 - Implement a My Boards functionality where a user could see all the boards that they have created in the application and toggle in between them without losing data
