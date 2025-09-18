@@ -117,6 +117,7 @@ code {
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
 }
 
 .board-action-btn:hover {
@@ -137,6 +138,7 @@ code {
 /* Columns Container */
 .columns-container {
   display: flex;
+  flex-direction: row;
   gap: 16px;
   overflow-x: auto;
   padding-bottom: 20px;
@@ -150,23 +152,6 @@ code {
   }
 }
 
-.columns-container::-webkit-scrollbar {
-  height: 8px;
-}
-
-.columns-container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.columns-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
-
-.columns-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
 
 /* Column Styles */
 .column {
@@ -185,9 +170,11 @@ code {
 }
 
 @media (max-width: 767px) {
+  .columns-container {
+    flex-direction: column;
+  }
   .column {
-    width: 260px;
-    min-width: 260px;
+    margin:auto;
   }
 }
 
@@ -474,8 +461,11 @@ code {
 
 @media (max-width: 767px) {
   .add-column-btn {
-    width: 260px;
-    min-width: 260px;
+    width:auto;
+  }
+  .add-board-btn {
+    float:none;
+    margin-bottom: 20px;
   }
 }
 

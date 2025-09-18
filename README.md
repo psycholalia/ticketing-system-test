@@ -32,7 +32,7 @@ I wanted to fail quickly without getting too deep into the weeds of why an imple
 - Delete tickets with confirmation
 
 ### Technical Features
-- Responsive design that works on all devices (note: this RWD maintains the horizontal column layout in favor of legibility over disorienting users with a vertial layout on smaller devices.)
+- Responsive design that works on all devices 
 - Real-time updates with GraphQL polling
 - Smooth drag-and-drop interactions
 - Error handling and loading states
@@ -101,13 +101,14 @@ To make changes:
 docker-compose down
 ```
 
-This will stop all containers while preserving your data in the DynamoDB instance.
+This will stop all containers.
 
 ## Next steps
 Here are some perceived next steps for this application:
 
 ### Features
 - Implement a single table design model for DynamoDB 
+- Fully implement a delete board workflow on the front end
 - Enable multiple users to interact with this application at once
 - Implement a soft delete functionality
 - Implement a My Boards functionality where a user could see all the boards that they have created in the application and toggle in between them without losing data
@@ -116,4 +117,7 @@ Here are some perceived next steps for this application:
 
 ### Tech Debt
 - Fix deprecation warnings highlighted by backend tests
+- Implement more robust error handling
+- Implement more robust test cases (not just happy path)
 - Fix DND opacity
+- Implement OTEL, or other logging/monitoring solution

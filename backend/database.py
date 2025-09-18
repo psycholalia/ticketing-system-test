@@ -111,10 +111,13 @@ async def seed_data():
     
     # Create sample tickets
     tickets_data = [
-        {'id': 'ticket-1', 'column_id': 'col-1', 'title': 'Design homepage layout', 'description': 'Create wireframes and mockups for the homepage', 'position': 0},
-        {'id': 'ticket-2', 'column_id': 'col-1', 'title': 'Set up authentication', 'description': 'Implement user login and registration', 'position': 1},
-        {'id': 'ticket-3', 'column_id': 'col-2', 'title': 'Build navigation component', 'description': 'Create responsive navigation bar', 'position': 0},
-        {'id': 'ticket-4', 'column_id': 'col-3', 'title': 'Configure development environment', 'description': 'Set up Docker and development tools', 'position': 0}
+        {'id': 'ticket-1', 'column_id': 'col-1', 'title': 'Prompt LLM to init', 'description': 'Use bolt.new to provide quick greenfield project', 'position': 0},
+        {'id': 'ticket-2', 'column_id': 'col-1', 'title': 'Make adjustments', 'description': 'Adjust LLM code where appropriate', 'position': 1},
+        {'id': 'ticket-3', 'column_id': 'col-2', 'title': 'Go for a walk', 'description': 'Grab some water, too', 'position': 0},
+        {'id': 'ticket-4', 'column_id': 'col-3', 'title': 'Prompt LLM to write test cases', 'description': 'Use bolt.new for initial tests', 'position': 0},
+        {'id': 'ticket-5', 'column_id': 'col-3', 'title': 'Fix LLMS test cases', 'description': 'Struggling with best practices', 'position': 1},
+        {'id': 'ticket-6', 'column_id': 'col-3', 'title': 'Test e2e', 'description': 'Dont forget different browsers', 'position': 2},
+        {'id': 'ticket-7', 'column_id': 'col-3', 'title': 'Document work', 'description': 'Include next steps & tech debt', 'position': 3}
     ]
     
     for ticket in tickets_data:
@@ -167,7 +170,6 @@ def create_board(name, id=None):
 
 def delete_board(board_id):
     # First get all columns in this board delete all tickets in  column
-    tickets_table = dynamodb.Table('tickets')
     columns_table = dynamodb.Table('columns')
     boards_table = dynamodb.Table('boards')
 

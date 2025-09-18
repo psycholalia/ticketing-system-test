@@ -172,6 +172,7 @@ const Board = ({ board, columns, tickets, onDeleteBoard, refetch }) => {
         title="Delete Board"
       >
         <Trash2 size={32} />
+        Delete Board
       </button>
     </div>
   );

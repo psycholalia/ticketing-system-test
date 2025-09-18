@@ -135,18 +135,7 @@ const Column = ({ column, tickets, index, refetch }) => {
               >
                 <Edit3 size={14} />
               </button>
-              <button
-                className="icon-btn"
-                title="Copy column"
-              >
-                <Copy size={14} />
-              </button>
-              <button
-                className="icon-btn"
-                title="More options"
-              >
-                <MoreVertical size={14} />
-              </button>
+              
               <button
                 className="icon-btn danger"
                 onClick={handleDeleteColumn}
