@@ -29,6 +29,10 @@ function App() {
     setAddNewBoard(false);
     localStorage.setItem('user_board_id', boardId);
   }
+  const handleBoardDelete = () => {
+    console.log('here');
+    setAddNewBoard(true);
+  }
 
   const onDragEnd = async (result) => {
     const { destination, source, draggableId, type } = result;
@@ -138,6 +142,7 @@ function App() {
           board={data.board}
           columns={data.columns}
           tickets={data.allTickets}
+          onDeleteBoard={handleBoardDelete}
           refetch={refetch}
         />
       </div>

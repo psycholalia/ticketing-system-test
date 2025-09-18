@@ -18,11 +18,3 @@ jest.mock('react-beautiful-dnd', () => ({
     innerRef: jest.fn(),
   }, {}),
 }));
-
-// Mock Apollo Client
-jest.mock('@apollo/client', () => ({
-  ...jest.requireActual('@apollo/client'),
-  useQuery: jest.fn(),
-  useMutation: jest.fn(),
-  gql: jest.fn(),
-}));

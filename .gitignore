@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+*.pyc
+/backend/__pycache__
+/backend/.pytest_cache

@@ -3,7 +3,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 import Ticket from './Ticket';
 import { UPDATE_COLUMN_MUTATION, DELETE_COLUMN_MUTATION, CREATE_TICKET_MUTATION } from '../graphql/queries';
-import { Plus, Trash2, MoreVertical, Edit3, Copy } from 'lucide-react';
+import { Plus, Trash2, Edit3 } from 'lucide-react';
 
 const Column = ({ column, tickets, index, refetch }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -135,18 +135,7 @@ const Column = ({ column, tickets, index, refetch }) => {
               >
                 <Edit3 size={14} />
               </button>
-              <button
-                className="icon-btn"
-                title="Copy column"
-              >
-                <Copy size={14} />
-              </button>
-              <button
-                className="icon-btn"
-                title="More options"
-              >
-                <MoreVertical size={14} />
-              </button>
+              
               <button
                 className="icon-btn danger"
                 onClick={handleDeleteColumn}
