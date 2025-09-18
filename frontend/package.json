@@ -39,5 +39,9 @@
       "last 1 safari version"
     ]
   },
+  "devServer": {
+    "compress": true,
+    "disableHostCheck": true
+  },
   "proxy": "http://backend:4000"
 }
