@@ -26,3 +26,4 @@ dist-ssr
 *.pyc
 /backend/__pycache__
 /backend/.pytest_cache
+/frontend/build
